@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 type SpiritualStage = 'flourishing' | 'seeking' | 'wrestling' | 'departing' | 'distant';
 
@@ -23,11 +28,26 @@ interface StageResult {
   icon: string;
 }
 
+const emailSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+});
+
+type EmailFormData = z.infer<typeof emailSchema>;
+
 export default function Survey() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<StageResult | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  const form = useForm<EmailFormData>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
   const questions: Question[] = [
     {
@@ -114,7 +134,7 @@ export default function Survey() {
       stage: 'flourishing',
       title: 'Flourishing in Faith',
       description: 'You have a strong, growing relationship with God and see questions as part of healthy spiritual development.',
-      encouragement: "Your faith journey is thriving! You've developed a mature perspective that embraces both certainty and mystery. Your openness to growth and questions actually strengthens your foundation.",
+      encouragement: "Your faith journey is thriving! You have developed a mature perspective that embraces both certainty and mystery. Your openness to growth and questions actually strengthens your foundation.",
       nextSteps: [
         'Explore deeper theological and spiritual topics',
         'Consider mentoring others in their faith journey',
@@ -128,7 +148,7 @@ export default function Survey() {
       stage: 'seeking',
       title: 'Actively Seeking',
       description: 'You maintain faith while honestly wrestling with questions, showing courage in your spiritual exploration.',
-      encouragement: "Your willingness to ask hard questions while staying engaged shows incredible courage. This is often where the deepest growth happens - you're not settling for shallow answers.",
+      encouragement: "Your willingness to ask hard questions while staying engaged shows incredible courage. This is often where the deepest growth happens - you are not settling for shallow answers.",
       nextSteps: [
         'Join discussion groups for honest faith conversations',
         'Read books that address your specific questions',
@@ -142,7 +162,7 @@ export default function Survey() {
       stage: 'wrestling',
       title: 'Wrestling with Faith',
       description: 'You are in a season of significant struggle and uncertainty, which takes tremendous honesty and bravery.',
-      encouragement: "Wrestling with faith doesn't mean you're failing - it means you're taking it seriously. Many of history's greatest believers went through seasons just like this. You're not alone.",
+      encouragement: "Wrestling with faith does not mean you are failing - it means you are taking it seriously. Many of history's greatest believers went through seasons just like this. You are not alone.",
       nextSteps: [
         'Find safe spaces to express doubts without judgment',
         'Consider professional counseling or spiritual direction',
@@ -155,8 +175,8 @@ export default function Survey() {
     departing: {
       stage: 'departing',
       title: 'Considering Departure',
-      description: 'You\'re seriously questioning whether faith has a place in your future, and that\'s an honest place to be.',
-      encouragement: "It takes courage to be this honest about where you are. Whether you stay or go, your journey matters. There's no shame in needing space to figure things out.",
+      description: 'You are seriously questioning whether faith has a place in your future, and that is an honest place to be.',
+      encouragement: "It takes courage to be this honest about where you are. Whether you stay or go, your journey matters. There is no shame in needing space to figure things out.",
       nextSteps: [
         'Take time to process without pressure to decide quickly',
         'Consider what specifically troubles you about faith',
@@ -169,8 +189,8 @@ export default function Survey() {
     distant: {
       stage: 'distant',
       title: 'Feeling Distant',
-      description: 'Faith feels far away or no longer relevant to your life, and you\'re exploring what comes next.',
-      encouragement: "Thank you for your honesty. Your story and journey matter, regardless of where faith fits. You're always welcome here, whether you're exploring, returning, or just processing.",
+      description: 'Faith feels far away or no longer relevant to your life, and you are exploring what comes next.',
+      encouragement: "Thank you for your honesty. Your story and journey matter, regardless of where faith fits. You are always welcome here, whether you are exploring, returning, or just processing.",
       nextSteps: [
         'Take time to heal from any past hurt or disappointment',
         'Explore what values and meaning look like for you now',
@@ -202,18 +222,86 @@ export default function Survey() {
     } else {
       const calculatedResult = calculateResult(newAnswers);
       setResult(calculatedResult);
-      setShowResult(true);
+      setShowEmailForm(true);
     }
+  };
+
+  const handleEmailSubmit = (data: EmailFormData) => {
+    setUserEmail(data.email);
+    setShowEmailForm(false);
+    setShowResult(true);
   };
 
   const resetSurvey = () => {
     setCurrentQuestion(0);
     setAnswers([]);
+    setShowEmailForm(false);
     setShowResult(false);
     setResult(null);
+    setUserEmail("");
+    form.reset();
   };
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+  if (showEmailForm && result) {
+    return (
+      <section className="py-20 bg-gray-50 min-h-screen">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-envelope text-blue-600 text-2xl"></i>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Almost Done!</h2>
+              <p className="text-gray-600">
+                We'd love to send you your personalized results and resources that match your spiritual stage. 
+                Enter your email below to receive your spiritual journey insights.
+              </p>
+            </div>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleEmailSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold text-gray-700">Email Address</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="email"
+                          placeholder="your.email@example.com" 
+                          className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button 
+                  type="submit" 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                  disabled={form.formState.isSubmitting}
+                >
+                  <i className="fas fa-arrow-right mr-2"></i>
+                  {form.formState.isSubmitting ? "Processing..." : "See My Results"}
+                </Button>
+              </form>
+            </Form>
+
+            <div className="text-center mt-6">
+              <p className="text-sm text-gray-500">
+                We respect your privacy. Your email will only be used to send you relevant resources and updates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (showResult && result) {
     return (
@@ -260,12 +348,15 @@ export default function Survey() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/latest-messages">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                  <i className="fas fa-book-open mr-2"></i>
-                  Explore Latest Messages
-                </Button>
-              </Link>
+              <a 
+                href="https://faithandfuture.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-center"
+              >
+                <i className="fas fa-book-open mr-2"></i>
+                Explore Latest Messages
+              </a>
               <Link href="/contact">
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
                   <i className="fas fa-envelope mr-2"></i>

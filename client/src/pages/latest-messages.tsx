@@ -16,7 +16,7 @@ export default function LatestMessages() {
             We regularly publish thoughtful articles, devotionals, and responses to common questions about faith. Join our community of readers exploring life's biggest questions.
           </p>
           <a 
-            href="#" 
+            href="https://faithandfuture.substack.com/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
