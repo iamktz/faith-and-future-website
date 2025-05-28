@@ -230,13 +230,19 @@ export default function Survey() {
 
   const saveSurveyMutation = useMutation({
     mutationFn: async (surveyData: { email: string; answers: string; spiritualStage: string }) => {
-      return await apiRequest("/api/survey-responses", {
+      const response = await fetch("/api/survey-responses", {
         method: "POST",
-        body: JSON.stringify(surveyData),
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(surveyData),
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
     },
   });
 
