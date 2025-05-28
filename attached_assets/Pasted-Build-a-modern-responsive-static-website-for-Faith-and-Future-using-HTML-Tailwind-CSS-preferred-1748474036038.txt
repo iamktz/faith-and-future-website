@@ -1,0 +1,96 @@
+Build a modern, responsive static website for “Faith and Future” using HTML, Tailwind CSS (preferred), and minimal JavaScript. The site should be welcoming, contemporary, and trustworthy—not like a small personal blog. Include clear navigation with all links working.
+
+Site Structure and Features:
+
+1. Homepage (/)
+Header: “Faith and Future” logo/text with navigation (Home, About, Spiritual Survey, Latest Messages, Contact)
+
+Hero Section:
+
+Tagline: “Helping doubters and seekers find confident hope in Jesus.”
+
+Primary Call to Action:
+
+Large button: “Where Are You on Your Spiritual Journey? Take the Survey” (links to /survey)
+
+Visual: Warm, modern background (gradient, subtle image, or tasteful photo)
+
+Footer: Copyright and social icons
+
+2. Spiritual Survey Page (/survey)
+Headline: “Where are you on your spiritual journey?”
+
+Intro: “No matter where you’re at, you’re not alone. Select the option that best describes you.”
+
+Survey Options:
+Display as radio buttons or clickable cards:
+
+Spiritually strong
+
+Curious but questioning
+
+Struggling with doubt
+
+One foot out the door
+
+Deconstructed/left faith
+
+On selection, display these personalized encouraging messages:
+
+Spiritually strong:
+“That’s wonderful! Stay rooted and keep growing. Explore our latest messages for deeper insights and encouragement.”
+
+Curious but questioning:
+“Your curiosity is valuable. Honest questions lead to deeper understanding. You’ll find resources here that honor your journey.”
+
+Struggling with doubt:
+“You’re not alone. Many people of faith wrestle with doubt. We’ve gathered stories and resources for those walking through tough seasons.”
+
+One foot out the door:
+“We understand it’s not easy. We’re here to listen, not judge. Take your time—there’s a place for honest struggle here.”
+
+Deconstructed/left faith:
+“Thank you for your honesty. Wherever you are, you matter. Our hope is to offer understanding, not pressure. Explore freely and know you’re welcome.”
+
+After message, offer buttons to:
+
+“Latest Messages” (link to /latest-messages)
+
+“Contact” (link to /contact)
+
+3. About Page (/about)
+Mission-Driven Overview:
+“Faith and Future exists to create a welcoming space for doubters, seekers, and anyone exploring Christian faith. Our mission is to share hope, tackle hard questions, and encourage honest conversation. We believe real faith can stand up to real questions—and that Jesus meets people wherever they are.”
+
+If including an image, use a professional-quality logo or silhouette (no amateur photos).
+
+Keep the content focused on the mission and values.
+
+4. Contact Page (/contact)
+Simple contact form: Name, Email, Message, Submit button
+
+Message: “We’d love to hear from you. Reach out with your questions, stories, or prayer requests.”
+
+On submit, show a thank you message (form doesn’t need backend, just confirmation).
+
+5. Latest Messages Page (/latest-messages)
+Headline: “Latest Messages”
+
+Blurb: “Find our latest devotionals, articles, and spiritual insights on our Substack.”
+
+Button: “Read on Substack” (link to [insert your Substack URL])
+
+(Optional: Placeholder for future Substack embed.)
+
+Design Guidelines:
+
+Use clean, modern fonts and inviting colors.
+
+Responsive/mobile-friendly.
+
+Homepage and navigation should prioritize the spiritual survey as the main call to action.
+
+Minimalist and professional—no clutter or low-quality images.
+
+Summary:
+A modern “Faith and Future” site featuring a homepage with a clear call to action (the Spiritual Survey), an About/Mission page, Contact form, and Latest Messages page linking to Substack. The survey page should engage users by letting them identify where they are spiritually and receive an encouraging, tailored message.
