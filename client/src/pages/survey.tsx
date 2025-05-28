@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 type SpiritualStage = 'flourishing' | 'seeking' | 'wrestling' | 'departing' | 'distant';
 
@@ -226,10 +228,38 @@ export default function Survey() {
     }
   };
 
-  const handleEmailSubmit = (data: EmailFormData) => {
-    setUserEmail(data.email);
-    setShowEmailForm(false);
-    setShowResult(true);
+  const saveSurveyMutation = useMutation({
+    mutationFn: async (surveyData: { email: string; answers: string; spiritualStage: string }) => {
+      return await apiRequest("/api/survey-responses", {
+        method: "POST",
+        body: JSON.stringify(surveyData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+  });
+
+  const handleEmailSubmit = async (data: EmailFormData) => {
+    if (!result) return;
+    
+    try {
+      await saveSurveyMutation.mutateAsync({
+        email: data.email,
+        answers: JSON.stringify(answers),
+        spiritualStage: result.stage,
+      });
+      
+      setUserEmail(data.email);
+      setShowEmailForm(false);
+      setShowResult(true);
+    } catch (error) {
+      console.error("Failed to save survey response:", error);
+      // Still proceed to show results even if save fails
+      setUserEmail(data.email);
+      setShowEmailForm(false);
+      setShowResult(true);
+    }
   };
 
   const resetSurvey = () => {
