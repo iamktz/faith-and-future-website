@@ -12,6 +12,8 @@ import LatestMessages from "@/pages/latest-messages";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
+// Test sync comment for GitHub integration
+
 function Router() {
   return (
     <div className="min-h-screen flex flex-col">
